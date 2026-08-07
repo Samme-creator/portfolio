@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Syed Samiullah — Portfolio</title>
+<meta name="description" content="Syed Samiullah — software that works, not software that demos well.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #000000;
+    --bg-raised: #0D0D0D;
+    --bg-raised-2: #151515;
+    --text: #FFFFFF;
+    --text-dim: #A3A3A3;
+    --line: #2A2A2A;
+    --accent: #C9A24B;
+    --accent-soft: rgba(201, 162, 75, 0.12);
+    --font-display: 'Space Grotesk', sans-serif;
+    --font-body: 'IBM Plex Sans', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; color-scheme: dark; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  a { color: inherit; }
+
+  /* ---------- background glow ---------- */
+  .glow {
+    position: fixed;
+    top: -20%;
+    left: 50%;
+    width: 900px;
+    height: 900px;
+    transform: translateX(-50%);
+    background: radial-gradient(circle, var(--accent-soft) 0%, transparent 65%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ---------- header ---------- */
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px 24px;
+    background: rgba(11, 12, 13, 0.75);
+    backdrop-filter: blur(10px);
+  }
+
+  .site-header .brand {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 17px;
+    text-decoration: none;
+  }
+
+  .site-header nav {
+    display: flex;
+    gap: 26px;
+  }
+
+  .site-header nav a {
+    font-size: 14px;
+    color: var(--text-dim);
+    text-decoration: none;
+    position: relative;
+    transition: color 0.2s ease;
+  }
+
+  .site-header nav a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -4px;
+    width: 0;
+    height: 1px;
+    background: var(--accent);
+    transition: width 0.25s ease;
+  }
+
+  .site-header nav a:hover,
+  .site-header nav a:focus-visible {
+    color: var(--text);
+  }
+
+  .site-header nav a:hover::after,
+  .site-header nav a:focus-visible::after {
+    width: 100%;
+  }
+
+  main {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* ---------- reveal-on-scroll ---------- */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ---------- hero ---------- */
+  .hero {
+    padding: 90px 0 70px;
+    text-align: center;
+  }
+
+  .eyebrow {
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 22px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .eyebrow::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: var(--accent);
+    border-radius: 1px;
+    animation: pulse 2.2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.35; }
+  }
+
+  h1 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(2.4rem, 7vw, 3.8rem);
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    margin-bottom: 20px;
+  }
+
+  .tagline {
+    font-size: clamp(1.05rem, 2.6vw, 1.25rem);
+    color: var(--text-dim);
+    max-width: 46ch;
+    margin: 0 auto 26px;
+  }
+
+  .bio {
+    font-size: 15.5px;
+    max-width: 52ch;
+    margin: 0 auto 12px;
+  }
+
+  .building {
+    font-size: 15.5px;
+    color: var(--text-dim);
+    max-width: 52ch;
+    margin: 0 auto 40px;
+  }
+
+  .building strong { color: var(--text); font-weight: 500; }
+
+  .hero-ctas {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .cta, .cta-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-body);
+    font-size: 15px;
+    text-decoration: none;
+    padding: 13px 24px;
+    border-radius: 4px;
+    transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .cta {
+    font-weight: 500;
+    color: var(--bg);
+    background: var(--accent);
+    border: 1px solid var(--accent);
+  }
+
+  .cta:hover, .cta:focus-visible {
+    background: #DDB65D;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(201, 162, 75, 0.25);
+  }
+
+  .cta-secondary {
+    color: var(--text-dim);
+    border: 1px solid var(--line);
+    background: transparent;
+  }
+
+  .cta-secondary:hover, .cta-secondary:focus-visible {
+    color: var(--text);
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  .cta svg { width: 16px; height: 16px; }
+
+  /* ---------- section headers ---------- */
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    margin-bottom: 36px;
+  }
+
+  .section-head .num {
+    font-family: var(--font-display);
+    color: var(--accent);
+    font-size: 14px;
+  }
+
+  .section-head h2 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 26px;
+  }
+
+  section.block { padding: 70px 0; }
+  section.block + section.block { border-top: 1px solid var(--line); }
+
+  /* ---------- project cards ---------- */
+  .projects-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .project-card {
+    background: var(--bg-raised);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 28px;
+    transition: border-color 0.25s ease, transform 0.25s ease, background 0.25s ease;
+  }
+
+  .project-card:hover {
+    border-color: var(--accent);
+    background: var(--bg-raised-2);
+    transform: translateY(-3px);
+  }
+
+  .project-card .label {
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+
+  .project-card h3 {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
+
+  .project-card p {
+    font-size: 14.5px;
+    color: var(--text-dim);
+    max-width: 62ch;
+    margin-bottom: 18px;
+  }
+
+  .project-card .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+
+  .project-card .meta span {
+    font-size: 12px;
+    color: var(--text-dim);
+    border: 1px solid var(--line);
+    padding: 5px 10px;
+    border-radius: 20px;
+  }
+
+  .project-card .repo-link {
+    font-size: 14px;
+    color: var(--accent);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: gap 0.2s ease;
+  }
+
+  .project-card .repo-link:hover { gap: 10px; }
+
+  /* ---------- contact ---------- */
+  .contact-form {
+    max-width: 480px;
+  }
+
+  .field { margin-bottom: 20px; }
+
+  .field label {
+    display: block;
+    font-size: 13px;
+    color: var(--text-dim);
+    margin-bottom: 8px;
+  }
+
+  .field input,
+  .field textarea {
+    width: 100%;
+    background: var(--bg-raised);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 15px;
+    padding: 12px 14px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .field input:focus,
+  .field textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-soft);
+  }
+
+  .field textarea { resize: vertical; min-height: 120px; }
+
+  .contact-form button {
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 15px;
+    color: var(--bg);
+    background: var(--accent);
+    border: none;
+    padding: 13px 26px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .contact-form button:hover {
+    background: #DDB65D;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(201, 162, 75, 0.25);
+  }
+
+  .contact-form button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+  /* ---------- footer ---------- */
+  footer.site-footer {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 30px 24px 50px;
+    font-size: 13px;
+    color: var(--text-dim);
+    border-top: 1px solid var(--line);
+    position: relative;
+    z-index: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .reveal { transition: none; opacity: 1; transform: none; }
+    .eyebrow::before { animation: none; }
+    .cta, .cta-secondary, .project-card, .contact-form button { transition: none; }
+  }
+
+  @media (max-width: 640px) {
+    .site-header { flex-direction: column; gap: 12px; }
+    section.block { padding: 50px 0; }
+  }
+</style>
+</head>
+<body>
+
+<div class="glow"></div>
+
+<header class="site-header">
+  <a class="brand" href="#top">Syed Samiullah</a>
+  <nav>
+    <a href="#projects">Projects</a>
+    <a href="#contact">Contact</a>
+    <a href="https://github.com/Samme-creator" target="_blank" rel="noopener">GitHub</a>
+  </nav>
+</header>
+
+<main id="top">
+
+  <section class="hero reveal">
+    <div class="eyebrow">Building in public — week 4</div>
+    <h1>Syed Samiullah</h1>
+    <p class="tagline">I build software that works, not software that demos well.</p>
+    <p class="bio">AI/ML student at the University of Malakand, currently interning at FlyRank.ai across machine learning and applied AI fluency.</p>
+    <p class="building"><strong>Right now:</strong> shipping a supervised ML pipeline for content-refresh scoring, and finishing a pharmacy management system with a full SQLite schema, secure auth, and a packaged desktop build.</p>
+    <div class="hero-ctas">
+      <a class="cta" href="https://github.com/Samme-creator" target="_blank" rel="noopener">
+        <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+          <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38
+          0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13
+          -.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07
+          -1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82
+          .64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12
+          .51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2
+          0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/>
+        </svg>
+        View GitHub
+      </a>
+      <a class="cta-secondary" href="#projects">See my work ↓</a>
+    </div>
+  </section>
+
+  <section class="block" id="projects">
+    <div class="section-head reveal">
+      <span class="num">01</span>
+      <h2>Projects</h2>
+    </div>
+
+    <div class="projects-grid">
+
+      <div class="project-card reveal">
+        <div class="label">Case Study</div>
+        <h3>MediCare Pro Extra</h3>
+        <p>A pharmacy management system in Python: eight-table SQLite schema with fifteen PRAGMA-tuned indexes, SHA-256 authenticated login with parameterized queries, packaged into a standalone Windows executable with PyInstaller.</p>
+        <div class="meta">
+          <span>Python</span><span>SQLite</span><span>PyInstaller</span>
+        </div>
+        <a class="repo-link" href="https://github.com/Samme-creator/MediCare-Pro-Extra" target="_blank" rel="noopener">View source on GitHub →</a>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="label">Case Study — FlyRank.ai Internship</div>
+        <h3>Lane 2: Refresh / Content Opportunity Scoring</h3>
+        <p>A full supervised ML pipeline: feature prep via DuckDB against a Hugging Face warehouse, a baseline rule, three trained models (logistic regression, decision tree, random forest), evaluation, and an automated PDF report. Random forest was the strongest performer.</p>
+        <div class="meta">
+          <span>Python</span><span>scikit-learn</span><span>DuckDB</span>
+        </div>
+        <a class="repo-link" href="https://github.com/Samme-creator/flyrank-ml-internship-starter" target="_blank" rel="noopener">View source on GitHub →</a>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="label">Case Study</div>
+        <h3>ATM App</h3>
+        <p>A terminal-based ATM simulator, rebuilt after Python 3.14 dropped compatibility with the original <code>curses</code>-based interface. Rebuilt on <code>rich</code> and <code>colorama</code> to stay on a current Python version instead of freezing the environment.</p>
+        <div class="meta">
+          <span>Python</span><span>rich</span><span>colorama</span>
+        </div>
+        <a class="repo-link" href="https://github.com/Samme-creator" target="_blank" rel="noopener">View on GitHub →</a>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="block" id="contact">
+    <div class="section-head reveal">
+      <span class="num">02</span>
+      <h2>Contact</h2>
+    </div>
+    <p class="reveal" style="color: var(--text-dim); max-width: 56ch; margin-bottom: 28px; font-size: 15px;">
+      Have a role, a project, or a question? Send a message and I'll get back to you directly.
+    </p>
+
+    <!--
+      REPLACE THE FORM ACTION BELOW with your actual Formspree endpoint,
+      e.g. https://formspree.io/f/xxxxxxxx
+    -->
+    <form class="contact-form reveal" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+      <div class="field">
+        <label for="name">Your name</label>
+        <input type="text" id="name" name="name" required>
+      </div>
+      <div class="field">
+        <label for="email">Your email</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+      <div class="field">
+        <label for="message">What's this about?</label>
+        <textarea id="message" name="message" required></textarea>
+      </div>
+      <button type="submit">Send message</button>
+    </form>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  Portfolio in progress — more case studies landing soon.
+</footer>
+
+<script>
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  revealEls.forEach((el) => io.observe(el));
+</script>
+
+</body>
+</html>
